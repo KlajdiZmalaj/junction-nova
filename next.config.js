@@ -8,11 +8,6 @@ const nextConfig = {
       directory: "out",
     },
   },
-  exportPathMap: function () {
-    return {
-      "/": { page: "/" },
-    };
-  },
 };
 
 module.exports = nextConfig;
