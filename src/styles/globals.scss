@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "./animated";
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+ul,
+li {
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.contentContainer {
+  padding: 24px;
+  background-color: var(--neutral-800);
+}
+
+//prime global override
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: var(--neutral-900);
+  color: #fff;
+  @extend .text-label-s !optional;
+}
+
+button {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.shadowed {
+  filter: drop-shadow(0px 4px 6px rgba(17, 20, 23, 0.5));
+}
+
+.p-datatable .p-datatable-tbody > tr {
+  background-color: var(--neutral-800);
+  color: #fff;
+}
+.p-datatable .p-datatable-tbody > tr > td,
+.p-datatable .p-datatable-thead > tr > th {
+  border-color: var(--neutral-900);
+}
+.p-paginator {
+  background-color: transparent;
+}
+
+button.p-paginator-element.p-link,
+.p-paginator .p-paginator-pages .p-paginator-page {
+  background: transparent !important;
+  border: 0 !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  transition: 0.3s;
+  &.p-highlight,
+  &:hover {
+    background: var(--neutral-900) !important;
+  }
+}
+.p-datatable-table {
+  border-left: 1px solid var(--neutral-900);
+  border-right: 1px solid var(--neutral-900);
+}
+.paginationWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  .perPage {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    > button {
+      display: flex;
+      width: 40px;
+      height: 40px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      cursor: pointer;
+      &:hover {
+        background: var(--neutral-850);
+      }
+      &.active {
+        background: var(--neutral-900);
+      }
+    }
+  }
+}
+.p-datatable-tbody {
+  tr.disabled {
+    color: var(--neutral-400);
+  }
+}
+.p-overlaypanel-content,
+.p-confirm-popup {
+  border-radius: 4px;
+  border-radius: 4px;
+  border: 3px solid var(--error-500);
+  background: var(--error-50);
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
+
+  &:after,
+  &:before {
+    display: none;
+  }
+  > div:first-child {
+    color: var(--error-500);
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+.p-column-title {
+  text-align: center;
+}
+.p-confirm-popup {
+  max-width: 300px;
+  .p-confirm-popup-message {
+    margin: 0;
+  }
+  .p-confirm-popup-content {
+    padding: 16px;
+  }
+}
+.p-datatable .p-datatable-tbody > tr.hightlightedGreen {
+  background: #3d5934;
+}
+.p-datatable .p-datatable-tbody > tr.hightlighted {
+  background: var(--primary-700);
+}
+
+.exitButton {
+  border: 0;
+  color: var(--error-300);
+  background: var(--neutral-900);
+  &:hover {
+    color: var(--white);
+    background: var(--neutral-900) !important;
+  }
+}
+.p-inputswitch .p-inputswitch-slider {
+  background-color: var(--neutral-600);
+  transition: 0.3s;
+  &:hover {
+    background-color: var(--neutral-500);
+  }
+}
+
+// .p-inputswitch .p-inputswitch-slider:before {}
+.recharts-default-tooltip {
+  font-size: 10px;
+  .recharts-tooltip-label {
+    color: black;
+  }
+  .recharts-tooltip-item-list {
+    display: flex;
+    flex-flow: column;
+    > li {
+      padding: 0 !important;
+      margin: 0 !important;
+      height: 12px;
+    }
+  }
+}
+.custom-tooltip {
+  display: flex;
+  flex-flow: column;
+  background: #fff;
+  color: #222;
+  font-size: 12px;
+  text-align: center;
+  .label {
+    font-size: 15px;
+    background: #000;
+    color: #fff;
+    text-transform: capitalize;
+  }
+  .tmsv {
+    background: #4189db53;
+  }
+  .bottom {
+    background: #d5d5d5;
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+    height: 29px;
+  }
+  > div {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    > div {
+      display: flex;
+      flex-flow: row-reverse;
+      width: 100%;
+      border-bottom: 1px solid #ccc;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      > div {
+        padding: 0 10px;
+      }
+    }
+  }
+}
+.Toastify__toast {
+  min-width: 410px;
+}
+.p-column-filter-overlay {
+  .p-button {
+    color: #ffffff;
+    background: #205ea4;
+    border: 1px solid #205ea4;
+  }
+}
+body {
+  background: var(--neutral-800);
+}

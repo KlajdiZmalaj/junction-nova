@@ -1,0 +1,1 @@
+window.globalConfig = { API_URL : 'https://backend-url.com/api' }

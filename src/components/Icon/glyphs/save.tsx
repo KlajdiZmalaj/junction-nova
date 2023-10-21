@@ -1,0 +1,16 @@
+import React from "react";
+
+const Save = () => {
+	return (
+		<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path
+				fillRule="evenodd"
+				clipRule="evenodd"
+				d="M15 0H1C0.734784 0 0.48043 0.105357 0.292893 0.292893C0.105357 0.48043 0 0.734784 0 1V17C0 17.2652 0.105357 17.5196 0.292893 17.7071C0.48043 17.8946 0.734784 18 1 18H17C17.2652 18 17.5196 17.8946 17.7071 17.7071C17.8946 17.5196 18 17.2652 18 17V3.414C17.9999 3.14881 17.8946 2.89449 17.707 2.707L15 0ZM16 16H15V9H3V16H2V2H4V6H13V4H6V2H14.172L16 3.828V16ZM5 16V11H13V16H5Z"
+				fill="#172B4D"
+			/>
+		</svg>
+	);
+};
+
+export default Save;

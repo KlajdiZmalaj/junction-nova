@@ -1,0 +1,84 @@
+.singleBuildingImgWrapper {
+  position: relative;
+  width: 680px;
+  flex-shrink: 0;
+  height: 647px;
+  display: flex;
+  margin-bottom: 205px;
+  // transform: translateX(-10px);
+  margin-left: -10px;
+  img {
+    width: 100%;
+    position: absolute;
+    transition: 0.3s;
+    cursor: none;
+    &:hover {
+      transform: translateX(-50px) translateY(-20px);
+    }
+
+    &:nth-child(1) {
+      top: 0;
+      &:hover {
+        transform: translateX(-50px) translateY(-50px);
+      }
+    }
+    &:nth-child(2) {
+      top: 72px;
+    }
+    &:nth-child(3) {
+      top: 134px;
+    }
+    &:nth-child(4) {
+      top: 194px;
+    }
+    &:nth-child(5) {
+      top: 256px;
+    }
+    &:nth-child(6) {
+      top: 316px;
+    }
+    &:nth-child(7) {
+      top: 377px;
+    }
+    &:nth-child(8) {
+      top: 437px;
+      &:hover {
+        transform: translateX(-50px) translateY(0);
+      }
+    }
+    &:nth-child(9) {
+      top: 498px;
+      &:hover {
+        transform: translateX(-50px) translateY(0);
+      }
+    }
+    &:nth-child(10) {
+      top: -12px;
+      pointer-events: none;
+    }
+  }
+}
+.singleBuilding {
+  display: flex;
+  align-items: center;
+  background-image: url("../../images/buildingAnimated.gif");
+  background-size: 950px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.buildingInfo {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+.floorNumber {
+  font-size: 80px;
+  position: absolute;
+  left: -110px;
+  top: 22px;
+  font-weight: 900;
+  mix-blend-mode: initial;
+  color: white;
+  opacity: 0.3;
+  filter: drop-shadow(3px 9px 6px #222);
+}

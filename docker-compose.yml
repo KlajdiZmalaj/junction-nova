@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  node:
+    container_name: "nova_juntion"
+    tty: true
+    build:
+      dockerfile: ./.docker/node/Dockerfile
+      context: .
+      target: built
+    command: tail -f /dev/null
+    volumes:
+      - app-source:/app
+    working_dir: /app
+    ports:
+      - "3040:3040"
+      # - "3000:3000"
+volumes:
+  app-source: {}

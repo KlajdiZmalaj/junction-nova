@@ -1,0 +1,104 @@
+@import "@/theme/variables";
+.home {
+  width: 100%;
+}
+.building {
+  width: 100%;
+  display: flex;
+  height: calc(100vh - 70px);
+  @media (max-width: 1300px) {
+    flex-flow: column;
+    align-items: center;
+
+    .buildingInfos {
+      width: 100%;
+    }
+  }
+  .imgWrapper {
+    width: calc(50vw - 70px);
+    height: calc(50vw - 70px);
+    position: relative;
+    perspective: 12vw;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin: auto;
+
+    .buildOverlay {
+      position: absolute;
+      transition: 0.3s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      > div {
+        font-size: 3vw;
+        color: transparent;
+        transition: 1s;
+      }
+      &:hover {
+        > div {
+          color: #fff;
+        }
+      }
+      &.one {
+        width: 56%;
+        height: 58%;
+        transform: rotateX(4deg) rotateY(25deg) translateY(-50%);
+        transform-style: preserve-3d;
+        top: 49%;
+        mix-blend-mode: darken;
+
+        &:hover {
+          background: #f8c44196;
+          mix-blend-mode: hard-light;
+        }
+      }
+      &.two {
+        width: 45%;
+        height: 63%;
+        transform: rotateX(0deg) rotateY(146deg) translateY(-50%) translateX(15%);
+        top: 52%;
+        right: 0;
+        mix-blend-mode: darken;
+
+        > div {
+          transform: scaleX(-1);
+        }
+        &:hover {
+          // background: rgba(6, 134, 130, 0.18);
+
+          background: #1eb5ff7a;
+          mix-blend-mode: hard-light;
+        }
+      }
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .buildingInfos {
+    width: 50%;
+    padding: 15px;
+    text-align: right;
+    align-items: flex-end;
+
+    @media (max-width: 1300px) {
+      width: 100%;
+      text-align: center;
+      align-items: center;
+      .buttons {
+        justify-content: center;
+      }
+      p {
+        border: 0 !important;
+      }
+    }
+    p {
+      margin-top: 20px;
+      border-right: 2px solid var(--secondary-100);
+      padding-right: 15px;
+    }
+  }
+}

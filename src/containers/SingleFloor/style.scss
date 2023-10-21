@@ -1,0 +1,224 @@
+html {
+  --room1: rgba(161, 0, 0, 0.628);
+  --room2: rgba(143, 134, 7, 0.628);
+  --room3: rgba(72, 159, 19, 0.628);
+  --room4: rgba(24, 148, 115, 0.628);
+  --room5: rgba(11, 89, 162, 0.628);
+  --room6: rgba(76, 0, 255, 0.628);
+  --room7: rgba(126, 13, 121, 0.628);
+  --room8: rgba(196, 184, 154, 0.628);
+}
+.floorWrapper {
+  display: flex;
+  position: relative;
+  background-color: #fff;
+  padding: 50px;
+  width: 1450px;
+  margin: auto;
+  img {
+    width: 100%;
+    transform: rotate(-4.6deg);
+  }
+}
+.floor {
+  text-align: center;
+
+  .text-heading-l {
+    margin-top: 60px;
+    margin-bottom: 10px;
+  }
+  p {
+    margin-bottom: 10px;
+  }
+}
+
+.room {
+  position: absolute;
+  cursor: pointer;
+  transform: scale(1);
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+
+  &:hover {
+    transform: scale(1.3);
+    color: #fff;
+    font-weight: bold;
+  }
+}
+.room1 {
+  width: 260px;
+  height: 170px;
+  left: 319px;
+  top: 95px;
+  &:hover {
+    background-color: var(--room1);
+  }
+}
+.room2 {
+  width: 265px;
+  height: 264px;
+  left: 590px;
+  top: 97px;
+  clip-path: polygon(50% 0, 100% 0, 100% 78%, 63% 78%, 62% 100%, 0 100%, 0 0);
+  &:hover {
+    background-color: var(--room2);
+  }
+}
+.room3 {
+  width: 356px;
+  height: 292px;
+  left: 765px;
+  top: 95px;
+  clip-path: polygon(
+    28% 0,
+    100% 0,
+    100% 35%,
+    99% 90%,
+    39% 89%,
+    39% 100%,
+    20% 100%,
+    0 100%,
+    0 73%,
+    28% 73%
+  );
+  &:hover {
+    background-color: var(--room3);
+  }
+}
+.room4 {
+  width: 208px;
+  height: 261px;
+  left: 913px;
+  top: 365px;
+  &:hover {
+    background-color: var(--room4);
+  }
+}
+.room5 {
+  width: 378px;
+  height: 291px;
+  left: 744px;
+  top: 515px;
+  clip-path: polygon(
+    24% 0,
+    42% 0,
+    43% 41%,
+    100% 41%,
+    100% 100%,
+    38% 100%,
+    29% 100%,
+    30% 26%,
+    0 26%,
+    0 0
+  );
+  &:hover {
+    background-color: var(--room5);
+  }
+}
+.room6 {
+  width: 172px;
+  height: 286px;
+  left: 682px;
+  top: 515px;
+  clip-path: polygon(
+    34% 0,
+    34% 29%,
+    100% 29%,
+    100% 25%,
+    100% 100%,
+    38% 100%,
+    20% 100%,
+    0 100%,
+    0 20%,
+    0 0
+  );
+  &:hover {
+    background-color: var(--room6);
+  }
+}
+.room7 {
+  width: 362px;
+  height: 288px;
+  left: 320px;
+  top: 515px;
+  clip-path: polygon(
+    58% 0,
+    43% 0,
+    100% 0,
+    100% 0,
+    100% 100%,
+    88% 100%,
+    30% 100%,
+    0 100%,
+    0 13%,
+    58% 11%
+  );
+  &:hover {
+    background-color: var(--room7);
+  }
+}
+.room8 {
+  width: 212px;
+  height: 268px;
+  left: 316px;
+  top: 275px;
+  &:hover {
+    background-color: var(--room8);
+  }
+}
+.roomDetails {
+  display: flex;
+  > div:first-child > div:first-child {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+    transform: scale(1);
+    animation: pulse 2s infinite;
+    margin-top: 10px;
+  }
+  > div:last-child {
+    flex-grow: 1;
+    padding: 0 20px;
+    > div {
+      margin-bottom: 20px;
+    }
+  }
+  .p-button {
+    color: #ffffff;
+    background: #205ea4;
+    border: 1px solid #205ea4;
+  }
+  .legend {
+    display: flex;
+    flex-flow: column;
+    margin-top: 20px;
+    > span {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    > span div {
+      width: 20px;
+      height: 10px;
+      margin-right: 5px;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
