@@ -20,6 +20,9 @@ const GlobalContext = createContext<IGlobalContext>({
   getRooms: () => {},
   residents: [],
   getResidents: () => {},
+
+  allResidentsModal: false,
+  setAllResidentsModal: () => {},
 });
 
 const GlobalProvider = ({ children }: PropsWithChildren) => {
@@ -28,6 +31,7 @@ const GlobalProvider = ({ children }: PropsWithChildren) => {
   const [floors, setFloors] = useState<IFloorType[]>([]);
   const [rooms, setRooms] = useState<IRoomType[]>([]);
   const [residents, setResidents] = useState<IResidentType[]>([]);
+  const [allResidentsModal, setAllResidentsModal] = useState<boolean>(false);
 
   useEffect(() => {
     fetch("GET_BUILDINGS", {}).then((data: any) => {
@@ -62,6 +66,8 @@ const GlobalProvider = ({ children }: PropsWithChildren) => {
         residents,
         rooms,
         getRooms,
+        allResidentsModal,
+        setAllResidentsModal,
       }}
     >
       {children}
@@ -77,6 +83,8 @@ interface IGlobalContext {
   rooms: IRoomType[];
   getResidents: () => void;
   residents: IResidentType[];
+  allResidentsModal: boolean;
+  setAllResidentsModal: Dispatch<SetStateAction<boolean>>;
 }
 export default GlobalProvider;
 export const useGlobalContext = () => useContext(GlobalContext);

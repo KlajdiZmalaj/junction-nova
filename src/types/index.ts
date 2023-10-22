@@ -33,6 +33,9 @@ export type IResidentType = {
   name: string;
   roomId: string;
   surname: string;
+  note: string;
+  telephone: string;
+  specialRequirments: string;
 };
 export type IContractType = {
   id: string;

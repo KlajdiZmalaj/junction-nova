@@ -20,7 +20,7 @@ const APIProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     //when user changes save to localStorage
     setInStorage("user", user);
-    setInStorage("token", user.token);
+    setInStorage("token", user?.token || "");
   }, [user]);
 
   const login = async (data: any) => {
@@ -37,10 +37,15 @@ const APIProvider = ({ children }: PropsWithChildren) => {
 
   const logout = async () => {
     //call logut and remove from storage
-    fetch("LOGOUT", {}).then((data) => {
-      setInStorage("user", {});
-      setUser({});
-    });
+    fetch("LOGOUT", {})
+      .then((data) => {
+        setInStorage("user", {});
+        setUser({});
+      })
+      .catch(() => {
+        setInStorage("user", {});
+        setUser({});
+      });
   };
 
   const fetch = async (REQUEST_PATH: string, extraParams: any) => {

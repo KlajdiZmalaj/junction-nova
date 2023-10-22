@@ -240,3 +240,15 @@ body {
 .p-autocomplete .p-autocomplete-multiple-container {
   width: 100%;
 }
+.residentsWrapper {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  > span {
+    width: calc(100% / 3);
+  }
+}
