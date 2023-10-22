@@ -3,26 +3,68 @@ import { floor } from "@/images";
 import Image from "next/image";
 import "./style.scss";
 import { Dialog } from "primereact/dialog";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useGlobalContext } from "@/contexts/Global";
-import { useAPIContext } from "@/contexts/API";
+import { API_URL, useAPIContext } from "@/contexts/API";
 import { InputText } from "primereact/inputtext";
 import Icon from "@/components/Icon";
-import { MultiSelect } from "primereact/multiselect";
 import { FileUpload } from "primereact/fileupload";
 import { InputTextarea } from "primereact/inputtextarea";
+import { Calendar } from "primereact/calendar";
+import Button from "@/components/Button";
+import { AutoComplete } from "primereact/autocomplete";
+import { IContractType, IResidentType } from "@/types";
+import { toast } from "react-toastify";
 
+const RenderRoom = ({ id, setDialog }: any) => {
+  const { fetch } = useAPIContext();
+  const { rooms } = useGlobalContext();
+
+  //renders room on 2d plan
+  const roomObj = rooms[id - 1];
+
+  return (
+    <div
+      onClick={() => {
+        setDialog({ visible: true, roomNr: id });
+        fetch("GET_ROOM_DETAILS", {});
+      }}
+      className={`room room${id} ${roomObj?.occupied ? "redRoom" : "greenRoom"}`}
+    >
+      Room {id}
+    </div>
+  );
+};
 export default () => {
+  const autoCmplRef = useRef<any>({});
+  const { fetch } = useAPIContext();
   const { floors, getBuildingFloors, getResidents, residents, getRooms, rooms } =
     useGlobalContext();
-  const { fetch } = useAPIContext();
-  const [selectedResidents, setSelectedResidents] = useState(null);
 
   const { floorId, buildingId } = useParams();
   const [dialogData, setDialog] = useState<any>({
     visible: false,
   });
+
+  const [selectedResidents, setSelectedResidents] = useState<IResidentType[]>([]);
+  const [filteredResidents, setFilteredResidents] = useState([]);
+  const [contractInfos, setContractInfos] = useState<IContractType | null>(null);
+
+  const currentRoomOnModal = rooms[dialogData?.roomNr - 1];
+
+  useEffect(() => {
+    if (currentRoomOnModal?.alarm) {
+      toast.warning(`Sensor triggered, Alarm on room ${currentRoomOnModal?.floorId}`);
+    }
+  }, [currentRoomOnModal?.alarm]);
+
+  useEffect(() => {
+    //reset contract while switching roomss
+    if (currentRoomOnModal?.id) {
+      setContractInfos(null);
+    }
+  }, [currentRoomOnModal?.id]);
 
   useEffect(() => {
     getBuildingFloors(buildingId);
@@ -30,30 +72,98 @@ export default () => {
   }, [buildingId]);
 
   useEffect(() => {
-    if (floorId) getRooms(floorId);
+    getRooms(floorId);
+    let vali: number;
+    if (floorId) {
+      //we get Residents and rooms each 2 seconds for real time updates
+      vali = window.setInterval(() => {
+        getRooms(floorId);
+      }, 2000);
+    }
+    return () => {
+      clearInterval(vali);
+    };
   }, [floorId]);
 
-  const RenderRoom = ({ id }: any) => {
-    //renders room on 2d plan
-    return (
-      <div
-        onClick={() => {
-          setDialog({ visible: true, roomNr: id });
-          fetch("GET_ROOM_DETAILS", {});
-        }}
-        className={`room room${id}`}
-      >
-        Room {id}
-      </div>
-    );
-  };
+  useEffect(() => {
+    if (currentRoomOnModal?.residentId) {
+      const mapedResidents: any =
+        (currentRoomOnModal?.residentId || []).map((rId) => residents.find((r) => r.id == rId)) ||
+        [];
+      setSelectedResidents(mapedResidents);
+    }
+  }, [currentRoomOnModal?.residentId, residents]);
+
+  useEffect(() => {
+    //get contract details if we have id on room
+    if (currentRoomOnModal?.contractId) {
+      fetch("GET_CONTRACT", { contractId: currentRoomOnModal.contractId }).then(
+        (data: IContractType) => {
+          setContractInfos(data);
+        }
+      );
+    }
+  }, [currentRoomOnModal?.contractId]);
+
   const selectedFloor = useMemo(() => floors.find((f: any) => f.id == floorId), [floors, floorId]);
 
-  console.log("residents", residents);
-  console.log("selectedResidents", selectedResidents);
-  console.log("rooms", rooms);
+  const customBase64Uploader = async (e: any) => {
+    // convert file to base64 encoded
+    const file = e.files[0];
 
-  const currentRoomOnModal = rooms[dialogData?.roomNr - 1];
+    var fileToLoad = file;
+    var fileReader = new FileReader();
+    var base64File;
+    // Reading file content when it's loaded
+    fileReader.onload = function (event: any) {
+      base64File = event.target.result;
+      // base64File console
+      console.log(base64File);
+      setDialog({
+        ...dialogData,
+        base64String: base64File,
+      });
+    };
+
+    // Convert data to base64
+    fileReader.readAsDataURL(fileToLoad);
+  };
+  const handleSubmit = () => {
+    const base64String = dialogData?.base64String?.split?.(",")?.[1];
+    if (base64String && dialogData.dates?.[0]) {
+      fetch("UPLOAD_CONTRACT", {
+        base64String,
+        roomId: currentRoomOnModal.id,
+        start: dialogData.dates?.[0],
+        end: dialogData.dates?.[1],
+        type: "pdf",
+      }).then(() => {
+        toast.success("Done!");
+      });
+    } else {
+      toast.info("PDF and Date are required!");
+    }
+  };
+
+  const search = (event: any) => {
+    // Timeout to emulate a network connection
+    setTimeout(() => {
+      let _filteredResidents: any;
+
+      if (!event.query.trim().length) {
+        _filteredResidents = [...residents];
+      } else {
+        _filteredResidents = residents.filter((r) => {
+          return `${r.name} ${r.surname}`.toLowerCase().includes(
+            // ""
+            event.query.toLowerCase()
+          );
+        });
+      }
+
+      setFilteredResidents(_filteredResidents);
+    }, 250);
+  };
   console.log("currentRoomOnModal", currentRoomOnModal);
 
   return (
@@ -68,14 +178,14 @@ export default () => {
           {Array(8)
             .fill("")
             .map((_, index) => {
-              return <RenderRoom key={index} id={index + 1} />;
+              return <RenderRoom setDialog={setDialog} key={index} id={index + 1} />;
             })}
         </div>
         <Dialog
           dismissableMask={true}
           style={{ width: "80vw" }}
           maximizable
-          header={`Room ${dialogData.roomNr} Details`}
+          header={`Room ${dialogData.roomNr} Details | ${currentRoomOnModal?.name}`}
           visible={dialogData.visible}
           onHide={() => {
             setDialog({ visible: false });
@@ -85,7 +195,7 @@ export default () => {
             <div className="roomWrapper">
               <div
                 style={{
-                  backgroundColor: currentRoomOnModal?.occupied ? `#c21818` : `#18c218`,
+                  backgroundColor: currentRoomOnModal?.occupied ? `#da0c0c` : `#18c218`,
                 }}
                 className={`room${dialogData.roomNr}`}
               ></div>
@@ -96,7 +206,13 @@ export default () => {
                 <span className="p-inputgroup-addon">
                   <Icon icon="circle-info" />
                 </span>
-                <InputText disabled value="Total area : 35㎡ " />
+                <InputText disabled value={`Price: ${currentRoomOnModal?.price}$ `} />
+              </div>
+              <div className="p-inputgroup flex-1">
+                <span className="p-inputgroup-addon">
+                  <Icon icon="circle-info" />
+                </span>
+                <InputText disabled value={`Total area : ${currentRoomOnModal?.area}㎡ `} />
               </div>
               <div className="p-inputgroup flex-1">
                 <span className="p-inputgroup-addon">
@@ -111,25 +227,105 @@ export default () => {
                 />
               </div>
 
-              <MultiSelect
-                value={selectedResidents}
-                onChange={(e) => setSelectedResidents(e.value)}
-                options={residents}
-                optionLabel="name"
-                placeholder="Select Residents"
-                maxSelectedLabels={3}
-                className="w-full md:w-20rem"
-              />
-              <FileUpload
-                name="contract"
-                url={"/api/upload"}
+              <AutoComplete
+                ref={autoCmplRef}
+                field="name"
                 multiple
-                accept="image/*"
-                maxFileSize={5000000}
-                emptyTemplate={
-                  <p className="m-0">Upload / Drag and drop contracts here to upload.</p>
-                }
+                value={selectedResidents}
+                suggestions={filteredResidents}
+                completeMethod={search}
+                selectedItemTemplate={(e) => `${e.name} ${e.surname}`}
+                onKeyUp={(e: any) => {
+                  const valString = e.target?.value || "";
+                  if (e.key === "Enter") {
+                    fetch("UPDATE_RESIDENT", {
+                      roomId: currentRoomOnModal.id,
+                      name: valString.split(" ")[0] || "",
+                      surname: valString.split(" ")[1] || "",
+                    }).then(() => {
+                      getResidents();
+                      getRooms(floorId);
+                      autoCmplRef.current.getInput().value = "";
+                    });
+                  }
+                  // console.log("autoCmplRef");
+                }}
+                onUnselect={({ value }) => {
+                  const { id } = value;
+                  fetch("REMOVE_RESIDENT", {
+                    residentId: id,
+                    roomId: currentRoomOnModal.id,
+                  }).then(() => {
+                    getResidents();
+                    getRooms(floorId);
+                  });
+                }}
+                onSelect={({ value }) => {
+                  const { id } = value;
+                  fetch("ADD_RESIDENT", {
+                    residentId: id,
+                    roomId: currentRoomOnModal.id,
+                  }).then(() => {
+                    getResidents();
+                    getRooms(floorId);
+                  });
+                }}
+                onChange={(e) => {
+                  const lastItem = e.value[e.value.length - 1];
+                  console.log("on change", e.value, selectedResidents, lastItem);
+                }}
+                placeholder="Select residents for this room"
               />
+
+              {contractInfos?.pdfPath ? (
+                <div>
+                  <a
+                    href={`${API_URL}contract/downloadFile?pdfPath=${contractInfos?.pdfPath}`}
+                    className="p-button downloadContract"
+                    download
+                    target="_blank"
+                  >
+                    Download Contract
+                  </a>
+                  <Button
+                    onClick={() => {
+                      fetch("REMOVE_CONTRACT", {
+                        subpath: contractInfos.id,
+                      }).then(() => setContractInfos(null));
+                    }}
+                    className="!ml-2 !bg-error-300"
+                  >
+                    Remove contract
+                  </Button>
+                </div>
+              ) : (
+                <div className="contractWrapper">
+                  <FileUpload
+                    onSelect={customBase64Uploader}
+                    accept="*"
+                    maxFileSize={8000000}
+                    mode="advanced"
+                    emptyTemplate={
+                      <p className="m-0">Upload / Drag and drop contracts here to upload.</p>
+                    }
+                  />
+                  <Calendar
+                    value={dialogData?.dates}
+                    onChange={(e: any) => {
+                      setDialog({
+                        ...dialogData,
+                        dates: e.value,
+                      });
+                    }}
+                    selectionMode="range"
+                    readOnlyInput
+                    placeholder="Contract date : From - To"
+                  />
+                  <Button onClick={handleSubmit} className="!mt-7 !ml-autp">
+                    Submit
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </Dialog>

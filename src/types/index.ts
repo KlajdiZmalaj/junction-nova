@@ -24,6 +24,8 @@ export type IRoomType = {
   name: string;
   occupied: boolean;
   residentId: string[];
+  contractId: string;
+  price: string;
 };
 export type IResidentType = {
   contractId: string;
@@ -31,4 +33,8 @@ export type IResidentType = {
   name: string;
   roomId: string;
   surname: string;
+};
+export type IContractType = {
+  id: string;
+  pdfPath: string;
 };

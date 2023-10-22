@@ -29,7 +29,7 @@ export default () => {
       <Header />
       <div className="singleBuilding flex fle flex-col ">
         <div className="buildingInfo w-1/2 ">
-          <div className="text-heading-l">Building {buildingSelected?.name}</div>
+          <div className="text-heading-l">{buildingSelected?.name}</div>
           <p className="text-body-m mt-4">Select a floor on the building to preview rooms</p>
         </div>
         <div className="singleBuildingImgWrapper " onMouseLeave={() => setFloor(0)}>

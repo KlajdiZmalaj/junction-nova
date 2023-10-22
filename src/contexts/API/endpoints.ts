@@ -28,3 +28,31 @@ export const GET_RESIDENTS = () => ({
   url: "resident/getAll",
   method: "GET",
 });
+
+export const UPDATE_RESIDENT = (roomId: "", userName: "", userSurname: "") => ({
+  url: "room/updateResident",
+  method: "POST",
+});
+
+export const REMOVE_RESIDENT = (roomId: "", residentId: "") => ({
+  url: "room/deleteResident",
+  method: "POST",
+});
+export const ADD_RESIDENT = (roomId: "", residentId: "") => ({
+  url: "room/addResident",
+  method: "POST",
+});
+export const UPLOAD_CONTRACT = (roomId: "", base64String: "") => ({
+  url: "room/updateRoomContract",
+  method: "POST",
+});
+
+export const GET_CONTRACT = (contractId: "") => ({
+  url: "contract/byId",
+  method: "GET",
+});
+
+export const REMOVE_CONTRACT = (id: string) => ({
+  url: `contract/delete/${id}`,
+  method: "POST",
+});

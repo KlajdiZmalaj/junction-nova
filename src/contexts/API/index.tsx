@@ -65,7 +65,7 @@ const APIProvider = ({ children }: PropsWithChildren) => {
           return;
         }
         console.error("Error : ", err);
-        toast.error(`${err?.response?.data?.message || err?.message}`, {
+        toast.error(`${err?.response?.data || err?.response?.data?.message || err?.message}`, {
           position: "top-left",
           theme: "dark",
           toastId: err.config.url,
@@ -110,7 +110,6 @@ const handler = (options: any, token: string) => {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     [options.method.match(/POST|PATCH/g) ? "data" : "params"]: options.data,
-    paramsSerializer: { indexes: null },
   });
 };
 
